@@ -27,9 +27,7 @@ const user = require("./routes/userRouter")
 const order = require("./routes/orderRoute")
 const payment = require("./routes/paymentRoute");
 //errors
-app.get("/", (req, res) => {
-  res.json({message:"Hello Alhamdulillah I am Live Now"})
-})
+
 app.use(errorMiddleware)
 app.use("/api/v1", product)
 app.use("/api/v1", user);
