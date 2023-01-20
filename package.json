@@ -14,11 +14,7 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
-    "@ampproject/remapping": "^2.2.0",
-    "@babel/core": "^7.9.0",
-    "@typescript-eslint/eslint-plugin": "^2.34.0",
-    "@typescript-eslint/experimental-utils": "^2.34.0",
-    "@typescript-eslint/typescript-estree": "^2.34.0",
+   
     "bcryptjs": "^2.4.3",
     "body-parser": "^1.20.1",
     "cloudinary": "^1.32.0",
@@ -26,23 +22,21 @@
     "cookie-parser": "^1.4.6",
     "cors": "^2.8.5",
     "crypto": "^1.0.1",
-    "debug": "^4.3.4",
+    
     "dotenv": "^16.0.3",
-    "eslint-config-react-app": "^5.2.1",
+   
     "express": "^4.18.2",
     "express-fileupload": "^1.4.0",
     "jsonwebtoken": "^8.5.1",
     "mongoose": "^6.7.0",
-    "ms": "^2.1.2",
+    
     "multer": "^1.4.5-lts.1",
     "nodemailer": "^6.8.0",
     "nodemon": "^2.0.20",
-    "react-scripts": "^3.4.1",
-    "semver": "^5.7.1",
-    "source-map": "^0.5.7",
+    
+    
     "stripe": "^10.16.0",
-    "tsutils": "^3.17.1",
-    "typescript": "^3.2.1",
+   
     "validator": "^13.7.0"
   }
 }
