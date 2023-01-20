@@ -7,7 +7,7 @@ const cloudinary = require("cloudinary");
 exports.createProduct = catchAsyncErrors(async (req, res, next) => {
   let images = [];
 
-  if (typeof req.body.images === "Array") {
+  if (typeof req.body.images === "string") {
     images.push(req.body.images);
   } else {
     images = req.body.images;
@@ -36,34 +36,7 @@ exports.createProduct = catchAsyncErrors(async (req, res, next) => {
     product,
   });
 });
-//Working pagination but admin porducts===resultperpage product problem
-// Get All Product
-// exports.getAllProducts = catchAsyncErrors(async (req, res, next) => {
-//   const resultPerPage = 6;
-//    const productsCount = await Product.countDocuments();
 
-//   const apiFeature = new ApiFeatures(Product.find(), req.query)
-//     .search()
-//     .filter()
-//     .pagination(resultPerPage);
-
-//   let products = await apiFeature.query;
-
-//    let filteredProductsCount = products.length;
-
-//    apiFeature.pagination(resultPerPage);
-
- 
-
-//   res.status(200).json({
-//     success: true,
-//     products,
-//      productsCount,
-//      resultPerPage,
-//      filteredProductsCount,
-//   });
-// });
-//show alll procduct in admin dashboard but not work pagination
 //get all products
 exports.getAllProducts = catchAsyncErrors(async (req, res, next) => {
   // return next(new ErrorHandler("this is my err",500))
