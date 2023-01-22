@@ -156,6 +156,7 @@ exports.createProductReview = catchAsyncErrors(async (req, res, next) => {
 
   const review = {
     user: req.user._id,
+    userImg: req.user.avatar.url,
     name: req.user.name,
     rating: Number(rating),
     comment,
@@ -252,3 +253,31 @@ exports.deleteReview = catchAsyncErrors(async (req, res, next) => {
     success: true,
   });
 });
+exports.deleteUserReview = async (req, res, next) => {
+  //   try {
+  //     req.body.password = await bcrypt.hash(req.body.password, 10);
+  //     const id = req.params.id;
+  //     const user = await User.findByIdAndDelete(id);
+  //  if (!user) {
+  //    return res.status(401).json({ message: "user not found" });
+  //  }
+  //     res.status(201).send({ message: "Wow user Deleted Successfully"});
+  //   } catch (error) {
+  //     res.status(404).send({ message: error.message });
+  //   }
+  try {
+    const id = req.params.id;
+    const ProductId = await Product.findById(id);
+    if (!ProductId) {
+      return res.status(401).json({ message: "Product not found" });
+    }
+
+    const Product = await Product.findByIdAndDelete(id);
+    if (!Product) {
+      return res.status(401).json({ message: "Product not found" });
+    }
+    res.status(201).send({ message: "Wow Product deleted Successfully" });
+  } catch (error) {
+    res.status(404).send({ message: error.message });
+  }
+};
