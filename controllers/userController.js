@@ -9,7 +9,7 @@ const sendEmail = require("../utils/sendEmail");
 // Register a User
 exports.registerUser = catchAsyncErrors(async (req, res, next) => {
   const myCloud = await cloudinary.v2.uploader.upload(req.body.avatar, {
-    folder: "",
+    folder: "avatars",
     width: 150,
     crop: "scale",
   });
@@ -26,7 +26,7 @@ exports.registerUser = catchAsyncErrors(async (req, res, next) => {
     },
   });
 
-    sendToken(user, 201, res);
+  sendToken(user, 201, res);
 });
 // Login User
 exports.loginUser = catchAsyncErrors(async (req, res, next) => {
@@ -118,10 +118,7 @@ exports.resetPassword = catchAsyncErrors(async (req, res, next) => {
 
   if (!user) {
     return next(
-      new ErrorHandler(
-        "Reset Password Token is invalid or has been expired",
-        400
-      )
+      new ErrorHandler("Reset Password Token is invalid or has been expired", 400)
     );
   }
 
@@ -173,6 +170,39 @@ exports.updateProfile = catchAsyncErrors(async (req, res, next) => {
     name: req.body.name,
     email: req.body.email,
   };
+//its not working with all fields update just pic update and another not work
+  // if (req.body.avatar !== "") {
+  //   const user = await User.findById(req.user.id);
+
+  //   const imageId = user.avatar.public_id;
+
+  //   await cloudinary.v2.uploader.destroy(imageId);
+
+  //   const myCloud = await cloudinary.v2.uploader.upload(req.body.avatar, {
+  //     folder: "avatars",
+  //     width: 150,
+  //     crop: "scale",
+  //   });
+
+  //   newUserData.avatar = {
+  //     public_id: myCloud.public_id,
+  //     url: myCloud.secure_url,
+  //   };
+  // }
+
+  const user = await User.findByIdAndUpdate(req.user.id, newUserData, {
+    new: true,
+    runValidators: true,
+    useFindAndModify: false,
+  });
+
+  res.status(200).json({
+    success: true,
+    user,
+  });
+});
+exports.updateProfilePic = catchAsyncErrors(async (req, res, next) => {
+  const newUserData = {};
 
   if (req.body.avatar !== "") {
     const user = await User.findById(req.user.id);
@@ -182,7 +212,7 @@ exports.updateProfile = catchAsyncErrors(async (req, res, next) => {
     await cloudinary.v2.uploader.destroy(imageId);
 
     const myCloud = await cloudinary.v2.uploader.upload(req.body.avatar, {
-      folder: "",
+      folder: "avatars",
       width: 150,
       crop: "scale",
     });
@@ -201,9 +231,8 @@ exports.updateProfile = catchAsyncErrors(async (req, res, next) => {
 
   res.status(200).json({
     success: true,
-    user
+    user,
   });
-  
 });
 // Get all users(admin)
 exports.getAllUser = catchAsyncErrors(async (req, res, next) => {
@@ -220,9 +249,7 @@ exports.getSingleUser = catchAsyncErrors(async (req, res, next) => {
   const user = await User.findById(req.params.id);
 
   if (!user) {
-    return next(
-      new ErrorHandler(`User does not exist with Id: ${req.params.id}`)
-    );
+    return next(new ErrorHandler(`User does not exist with Id: ${req.params.id}`));
   }
 
   res.status(200).json({
@@ -255,14 +282,12 @@ exports.deleteUser = catchAsyncErrors(async (req, res, next) => {
   const user = await User.findById(req.params.id);
 
   if (!user) {
-    return next(
-      new ErrorHandler(`User does not exist with Id: ${req.params.id}`, 400)
-    );
+    return next(new ErrorHandler(`User does not exist with Id: ${req.params.id}`, 400));
   }
 
-   const imageId = user.avatar.public_id;
+  const imageId = user.avatar.public_id;
 
-   await cloudinary.v2.uploader.destroy(imageId);
+  await cloudinary.v2.uploader.destroy(imageId);
 
   await user.remove();
 
