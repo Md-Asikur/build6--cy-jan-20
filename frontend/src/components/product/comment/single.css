@@ -1,0 +1,61 @@
+/* .ant-comment > .ant-comment-inner > .ant-comment-avatar {
+  height: 70px;
+  width: 70px;
+  border-radius: 50%;
+} */
+#commentForm{
+  padding: 20px 50px;
+   /* display: flex;
+  justify-content: center;
+  align-items: center; */
+}
+#commentForm>textarea{
+  display: block;
+  width: 100%;
+  border: none;
+  border-bottom: 3px solid #000;
+  border-radius: 0;
+  height: 60px;
+}
+#commentForm>button{
+/* display:flex; */
+margin: 10px;
+justify-content: center;
+  align-items: center;
+  flex-direction: column;
+text-align: center;
+padding: 10px 30px;
+cursor: pointer;
+background-color: beige;
+
+}
+#commentForm>button:focus{
+  border: none;
+   outline: none;
+}
+#commentForm>button:hover{
+ 
+   outline: none;
+}
+ul{
+  list-style: none;
+}
+ul>li{
+  list-style: none;
+}
+li{
+  list-style-type: none;
+}
+.ant-list-item>.ant-list-item-action>li{
+ display:flex;
+justify-content: center;
+  align-items: center;
+
+}
+.ant-list-item>.ant-list-item-action>li>span{
+  font-size: 30px;
+  background-color: rgba(0, 0, 0, 0.089);
+}
+.ant-comment-actions>li>span>span{
+   font-size: 20px;
+}

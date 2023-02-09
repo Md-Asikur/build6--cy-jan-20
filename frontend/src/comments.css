@@ -1,0 +1,136 @@
+.avatar_comment{
+  width: 70px;
+  min-width: 70px;
+  text-align:left;
+  padding: 5px;
+}
+
+.avatar_comment img{
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  object-fit: cover;
+}
+
+.avatar_comment small a{
+  color: #444;
+  text-decoration: none;
+  font-weight: 600;
+}
+
+.avatar_comment small a:hover{
+  color: crimson;
+}
+
+.comment_box {
+  width: 100%;
+  border: 1px solid #ddd;
+  margin-bottom: 1.75rem;
+}
+
+.avatar_reply{
+  display: flex;
+  align-items: center;
+  margin-bottom: 1.25rem;
+}
+
+.avatar_reply img{
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  object-fit: cover;
+}
+.avatar_reply .reply-text{
+  display: block;
+  opacity: 1;
+  font-size: 19px;
+}
+
+.comment_box .comment_nav {
+  cursor: pointer;
+  /* display: none; */
+}
+.comment_box .comment_nav i {
+  cursor: pointer;
+  font-size: 23px;
+ color: indigo;
+  padding: 0px 16px;
+}
+.comment_box:hover .comment_nav {
+  display: block;
+}
+.comment_box .comment_nav i:hover {
+  color: crimson;
+}
+ .reply-gap{
+   margin-left: 40px;
+}
+@media(max-width:768px){
+  .reply-gap{
+   margin-left: 20px;
+}
+.avatar_comment{
+  width: 50px;
+  min-width: 50px;
+  text-align:left;
+  padding: 2px;
+}
+
+.avatar_comment img{
+  width: 30px;
+  height: 30px;
+  border-radius: 50%;
+  object-fit: cover;
+}
+
+.avatar_comment small a{
+  color: #444;
+  text-decoration: none;
+  font-weight: 300;
+}
+
+.avatar_comment small a:hover{
+  color: crimson;
+}
+
+.comment_box {
+  width: 100%;
+  /* border: 1px solid #ddd; */
+  margin-bottom: 0.25rem;
+}
+
+.avatar_reply{
+  display: flex;
+  align-items: center;
+  margin-bottom: 0.25rem;
+}
+
+.avatar_reply img{
+  width: 30px;
+  height: 30px;
+  border-radius: 50%;
+  object-fit: cover;
+}
+.avatar_reply .reply-text{
+  display: block;
+  opacity: 1;
+  font-size: 14px;
+}
+
+.comment_box .comment_nav {
+  cursor: pointer;
+  /* display: none; */
+}
+.comment_box .comment_nav i {
+  cursor: pointer;
+  font-size: 14px;
+ color: indigo;
+  padding: 0px 8px;
+}
+.comment_box:hover .comment_nav {
+  display: block;
+}
+.comment_box .comment_nav i:hover {
+  color: crimson;
+}
+}

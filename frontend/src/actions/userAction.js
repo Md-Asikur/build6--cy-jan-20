@@ -48,6 +48,7 @@ export const login = (email, password) => async (dispatch) => {
     const { data } = await axios.post(`/api/v1/login`, { email, password }, config);
 
     dispatch({ type: LOGIN_SUCCESS, payload: data.user });
+     window.localStorage.setItem("userId", JSON.stringify(data.user?._id));
   } catch (error) {
     dispatch({ type: LOGIN_FAIL, payload: error.response.data.message });
   }
@@ -63,6 +64,7 @@ export const register = (userData) => async (dispatch) => {
     const { data } = await axios.post(`/api/v1/register`, userData, config);
 
     dispatch({ type: REGISTER_USER_SUCCESS, payload: data.user });
+    window.localStorage.setItem("userId", JSON.stringify(data.user?._id));
   } catch (error) {
     dispatch({
       type: REGISTER_USER_FAIL,
@@ -79,6 +81,7 @@ export const loadUser = () => async (dispatch) => {
     const { data } = await axios.get(`/api/v1/me`);
 
     dispatch({ type: LOAD_USER_SUCCESS, payload: data.user });
+    window.localStorage.setItem("userId", JSON.stringify(data.user?._id));
   } catch (error) {
     dispatch({ type: LOAD_USER_FAIL, payload: error.response.data.message });
   }
@@ -90,6 +93,7 @@ export const logout = () => async (dispatch) => {
     await axios.get(`/api/v1/logout`);
 
     dispatch({ type: LOGOUT_SUCCESS });
+    window.localStorage.removeItem("userId");
   } catch (error) {
     dispatch({ type: LOGOUT_FAIL, payload: error.response.data.message });
   }

@@ -1,12 +1,12 @@
-import { BrowserRouter, Route, Routes,Switch } from "react-router-dom";
+import { BrowserRouter, Route, Switch } from "react-router-dom";
 import "./App.css";
-import WebFont from "webfontloader";
+
 import { useState,useEffect } from "react";
 import Home from "./components/Home/Home";
 import Products from "./components/product/Products";
-import Footer from "./components/layout/Footer/Footer";
+
 import Headers from "./components/layout/Header/Headers";
-import Loader from "./components/layout/Loader/Loader";
+
 import ProductDetails from "./components/product/ProductDetails";
 import Search from "./components/product/Search";
 import LoginSignUp from "./components/User/AllLogReg";
@@ -15,7 +15,7 @@ import LoginSignUp from "./components/User/AllLogReg";
 import store from "./Store"
 import { loadUser } from "./actions/userAction";
 import UserOptions from "./components/layout/Header/UserOptions";
-import { useSelector } from "react-redux";
+import {  useSelector } from "react-redux";
 import Profile from "./components/User/Profile";
 import ProtectedRoute from "./components/Route/ProtectedRoute";
 import UpdateProfile from "./components/User/UpdateProfile";
@@ -45,7 +45,12 @@ import Payment from "./components/Cart/Payment";
 import { Elements } from "@stripe/react-stripe-js";
 import { loadStripe } from "@stripe/stripe-js";
 import UpdateProfilePic from "./components/User/UpdateProfilePic";
+import OtherInfo from "./components/User/OtherInfo/OtherInfo";
+
+
+
 function App() {
+  
   const { isAuthenticated, user } = useSelector((state) => state.user);
   const [stripeApiKey, setStripeApiKey] = useState("");
   
@@ -68,7 +73,6 @@ function App() {
   }, []);
 
   // window.addEventListener("contextmenu", (e) => e.preventDefault());
-
  
   return (
     <>
@@ -95,6 +99,7 @@ function App() {
 
           <Route exact path="/account" component={Profile} />
           <Route exact path="/account/:id" component={Profile} />
+          <Route exact path="/profile/:id" component={OtherInfo} />
           <ProtectedRoute exact path="/me/update" component={UpdateProfile} />
           <ProtectedRoute exact path="/me/update/pic" component={UpdateProfilePic} />
 

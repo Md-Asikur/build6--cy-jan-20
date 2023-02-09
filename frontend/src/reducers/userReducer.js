@@ -53,8 +53,9 @@ export const userReducer = (state = { user: {} }, action) => {
     case LOGIN_SUCCESS:
     case REGISTER_USER_SUCCESS:
     case LOAD_USER_SUCCESS:
-     
+     window.localStorage.setItem("userId", JSON.stringify(action.payload));
       return {
+        
         ...state,
         loading: false,
         isAuthenticated: true,
@@ -62,7 +63,7 @@ export const userReducer = (state = { user: {} }, action) => {
       };
 
     case LOGOUT_SUCCESS:
-    
+    window.localStorage.removeItem("userId");
       return {
         loading: false,
         user: null,
@@ -263,7 +264,7 @@ export const userDetailsReducer = (state = { user: {} }, action) => {
       return {
         ...state,
         loading: false,
-        user: action.payload,
+        userDetails: action.payload,
       };
 
     case USER_DETAILS_FAIL:

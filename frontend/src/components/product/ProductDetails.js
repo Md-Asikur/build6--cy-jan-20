@@ -1,7 +1,7 @@
-
-// export default ProductDetails;
-import React, { Fragment, useEffect, useState } from "react";
+import React, { Fragment, useCallback, useEffect, useState } from "react";
 import Carousel from "react-material-ui-carousel";
+import { List, Avatar, Row, Col } from "antd";
+import axios from "axios";
 import "./ProductDetails.css";
 import { useSelector, useDispatch } from "react-redux";
 import { clearErrors, getProductDetails, newReview } from "../../actions/productAction";
@@ -19,14 +19,31 @@ import {
 } from "@material-ui/core";
 import { Rating } from "@material-ui/lab";
 import { NEW_REVIEW_RESET } from "../../constants/productConstants";
+import Comment from "./comment/Comment";
+import LikeDislikes from "./LikeDislike/LikeDislike";
 
+import { Link, useHistory, useParams } from "react-router-dom";
+
+import Input from "./comments/Input";
+import Comments from "./comments/Comments";
+
+import { createComment, getComments } from "../../actions/commentAction";
+import Loading from "./editor/Loading";
+import Pagination from "./editor/Pagination.tsx";
 const ProductDetails = ({ match }) => {
   const dispatch = useDispatch();
   const alert = useAlert();
+  const comments = useSelector((state) => state.comments);
 
+  const [showComments, setShowComments] = useState([]);
+  const [loadings, setLoading] = useState(false);
+
+  //const blogId = useParams().slug;
+  const history = useHistory();
   const { product, loading, error } = useSelector((state) => state.productDetails);
 
   const { success, error: reviewError } = useSelector((state) => state.newReview);
+  const { user } = useSelector((state) => state.user);
 
   const options = {
     size: "large",
@@ -39,7 +56,12 @@ const ProductDetails = ({ match }) => {
   const [open, setOpen] = useState(false);
   const [rating, setRating] = useState(0);
   const [comment, setComment] = useState("");
-
+  const [CommentLists, setCommentLists] = useState([]);
+  //console.log("video is" , Video);
+  const productId = match.params.id;
+  const productVariable = {
+    productId: productId,
+  };
   const increaseQuantity = () => {
     if (product.Stock <= quantity) return;
 
@@ -92,6 +114,60 @@ const ProductDetails = ({ match }) => {
     }
     dispatch(getProductDetails(match.params.id));
   }, [dispatch, match.params.id, error, alert, reviewError, success]);
+  //comment
+  // useEffect(() => {
+  //   axios.post("/api/v1/getComments", productVariable).then((response) => {
+  //     if (response.data.success) {
+  //       //console.log("response.data.comments", response.data.comments);
+  //       setCommentLists(response.data.comments);
+  //     } else {
+  //       alert("Failed to get video Info");
+  //     }
+  //   });
+  // }, [setCommentLists]);
+
+  // const updateComment = (newComment) => {
+  //   setCommentLists(CommentLists.concat(newComment));
+  // };
+
+  const handleComment = (body) => {
+    if (!user) return;
+
+    const data = {
+      content: body,
+      user: user,
+      blog_id: product._id,
+      blog_user_id: product.user,
+
+      replyCM: [],
+      createdAt: new Date().toISOString(),
+    };
+
+    setShowComments([data, ...showComments]);
+    dispatch(createComment(data));
+  };
+
+  useEffect(() => {
+    //if (comments?.data?.length === 0) return;
+    setShowComments(comments?.data);
+  }, [comments?.data]);
+  //console.log(showComments);
+  const fetchComments = useCallback(async (id, num = 1) => {
+    setLoading(true);
+    dispatch(getComments(id, num));
+    setLoading(false);
+  }, []);
+
+  useEffect(() => {
+    if (!product._id) return;
+    const num = history.location.search.slice(6) || 1;
+    fetchComments(product._id, num);
+  }, [product._id, fetchComments, history]);
+
+  const handlePagination = (num) => {
+    if (!product._id) return;
+    fetchComments(product._id, num);
+  };
 
   return (
     <Fragment>
@@ -176,13 +252,13 @@ const ProductDetails = ({ match }) => {
                 size="large"
               />
 
-              <textarea
+              {/* <textarea
                 className="submitDialogTextArea"
                 cols="30"
                 rows="5"
                 value={comment}
                 onChange={(e) => setComment(e.target.value)}
-              ></textarea>
+              ></textarea> */}
             </DialogContent>
             <DialogActions>
               <Button onClick={submitReviewToggle} color="secondary">
@@ -193,8 +269,16 @@ const ProductDetails = ({ match }) => {
               </Button>
             </DialogActions>
           </Dialog>
-
-          {product.reviews && product.reviews[0] ? (
+          {/* <List.Item
+              
+            actions={[<LikeDislikes product productId={productId} userId={user?._id} />]}
+          ></List.Item>
+          <Comment
+            postId={product._id}
+            CommentLists={CommentLists}
+            refreshFunction={updateComment}
+          /> */}
+          {/* {product.reviews && product.reviews[0] ? (
             <div className="reviews">
               {product.reviews &&
                 product.reviews.map((review) => (
@@ -203,7 +287,29 @@ const ProductDetails = ({ match }) => {
             </div>
           ) : (
             <p className="noReviews">No Reviews Yet</p>
-          )}
+            )} */}
+
+          <div style={{ padding: "13px" }}>
+            {user ? (
+              <Input callback={handleComment} />
+            ) : (
+              <h5>
+                Please <Link to={`/login?product/${product._id}`}>login</Link> to comment.
+              </h5>
+            )}
+
+            {loadings ? (
+              <Loading />
+            ) : (
+              showComments?.map((comment, index) => (
+                <Comments key={index} comment={comment} />
+              ))
+            )}
+
+            {comments?.total > 1 && (
+              <Pagination total={comments?.total} callback={handlePagination} />
+            )}
+          </div>
         </Fragment>
       )}
     </Fragment>

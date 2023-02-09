@@ -34,7 +34,7 @@ router.route("/me/update/pic").put(isAuthenticatedUser, updateProfilePic);
 
 router
   .route("/admin/user/:id")
-  .get(isAuthenticatedUser, authorizeRoles("admin"), getSingleUser)
+  .get(getSingleUser)
   .put(isAuthenticatedUser, authorizeRoles("admin"), updateUserRole)
-  .delete(isAuthenticatedUser, authorizeRoles("admin"),deleteUser);
+  .delete(isAuthenticatedUser, authorizeRoles("admin"),deleteUser);//.get(isAuthenticatedUser, authorizeRoles("admin"), getSingleUser)
 module.exports = router;

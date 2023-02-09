@@ -15,7 +15,7 @@ exports.registerUser = catchAsyncErrors(async (req, res, next) => {
   });
 
   const { name, email, password } = req.body;
-
+ const token=sendToken(user, 201, res);
   const user = await User.create({
     name,
     email,
@@ -24,9 +24,12 @@ exports.registerUser = catchAsyncErrors(async (req, res, next) => {
       public_id: myCloud.public_id,
       url: myCloud.secure_url,
     },
+    token
+
   });
 
   sendToken(user, 201, res);
+  console.log(token)
 });
 // Login User
 exports.loginUser = catchAsyncErrors(async (req, res, next) => {
@@ -137,7 +140,7 @@ exports.resetPassword = catchAsyncErrors(async (req, res, next) => {
 // Get User Detail
 exports.getUserDetails = catchAsyncErrors(async (req, res, next) => {
   const user = await User.findById(req.user.id);
-console.log(user)
+
   res.status(200).json({
     success: true,
     user,

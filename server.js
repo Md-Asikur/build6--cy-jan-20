@@ -1,7 +1,9 @@
 const app = require("./app")
 const dotenv = require("dotenv");
-const cloudinary=require("cloudinary")
+const cloudinary=require("cloudinary").v2
 const connectDB = require("./config/database")
+const { createServer } =require("http") 
+
 // //config env
  dotenv.config({ path: "./config/config.env" });
 // Handling Uncaught Exception
@@ -23,7 +25,16 @@ cloudinary.config({
 });
 //connection
 connectDB()
-app.listen(process.env.PORT, () => {
+// Socket.io
+const http = createServer(app)
+
+
+
+
+
+
+
+http.listen(process.env.PORT, () => {
     console.log(`app is runnig at http://localhost:${process.env.PORT}`)
 })
 /

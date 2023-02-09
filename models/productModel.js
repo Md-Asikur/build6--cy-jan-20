@@ -31,6 +31,7 @@ const productSchema = new mongoose.Schema({
       },
     },
   ],
+
   category: {
     type: String,
     required: [true, "Please Enter Product Category"],
@@ -82,4 +83,5 @@ const productSchema = new mongoose.Schema({
   },
 });
 
-module.exports = mongoose.model("Product", productSchema);
+const Product = mongoose.model("Product", productSchema);
+module.exports={Product}
