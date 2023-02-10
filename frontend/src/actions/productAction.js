@@ -29,6 +29,9 @@ import {
   DELETE_REVIEW_SUCCESS,
   DELETE_REVIEW_FAIL,
   CLEAR_ERRORS,
+  ALL_ADMIN_PRODUCT_REQUEST,
+  ALL_ADMIN_PRODUCT_SUCCESS,
+  ALL_ADMIN_PRODUCT_FAIL,
 } from "../constants/productConstants";
 
 // Get All Products
@@ -72,6 +75,23 @@ export const getAdminProduct = () => async (dispatch) => {
   } catch (error) {
     dispatch({
       type: ADMIN_PRODUCT_FAIL,
+      payload: error.response.data.message,
+    });
+  }
+};
+export const getAllAdminProducts = () => async (dispatch) => {
+  try {
+    dispatch({ type: ALL_ADMIN_PRODUCT_REQUEST });
+
+    const { data } = await axios.get("/api/v1/products/admin");
+
+    dispatch({
+      type: ALL_ADMIN_PRODUCT_SUCCESS,
+      payload: data.products,
+    });
+  } catch (error) {
+    dispatch({
+      type: ALL_ADMIN_PRODUCT_FAIL,
       payload: error.response.data.message,
     });
   }

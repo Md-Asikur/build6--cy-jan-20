@@ -73,14 +73,14 @@ const CommentList= ({
     return (
       <div style={{float:"right"}}>
         <i
-          class="fa fa-trash-o"
+          className="fa fa-trash-o"
           aria-hidden="true"
          
           onClick={() => handleDelete(comment)}
         />
         <i
           
-          class="fa fa-pencil-square-o"
+          className="fa fa-pencil-square-o"
           aria-hidden="true"
           onClick={() => setEdit(comment)}
         />

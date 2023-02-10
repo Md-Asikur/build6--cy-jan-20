@@ -15,7 +15,7 @@ import LoginSignUp from "./components/User/AllLogReg";
 import store from "./Store"
 import { loadUser } from "./actions/userAction";
 import UserOptions from "./components/layout/Header/UserOptions";
-import {  useSelector } from "react-redux";
+import {  useDispatch, useSelector } from "react-redux";
 import Profile from "./components/User/Profile";
 import ProtectedRoute from "./components/Route/ProtectedRoute";
 import UpdateProfile from "./components/User/UpdateProfile";
@@ -46,11 +46,14 @@ import { Elements } from "@stripe/react-stripe-js";
 import { loadStripe } from "@stripe/stripe-js";
 import UpdateProfilePic from "./components/User/UpdateProfilePic";
 import OtherInfo from "./components/User/OtherInfo/OtherInfo";
+import Category from "./components/category/category";
+import { getCategories } from "./actions/categoryAction";
+import { getAllAdminProducts, getProduct } from "./actions/productAction";
 
 
 
 function App() {
-  
+  const dispatch=useDispatch()
   const { isAuthenticated, user } = useSelector((state) => state.user);
   const [stripeApiKey, setStripeApiKey] = useState("");
   
@@ -73,7 +76,13 @@ function App() {
   }, []);
 
   // window.addEventListener("contextmenu", (e) => e.preventDefault());
- 
+  useEffect(() => {
+    dispatch(getCategories());
+    dispatch(getProduct())
+    dispatch(getAllAdminProducts());
+  
+  }, [dispatch]);
+
   return (
     <>
       <BrowserRouter>
@@ -128,6 +137,12 @@ function App() {
             path="/admin/product"
             isAdmin={true}
             component={NewProduct}
+          />
+          <ProtectedRoute
+            exact
+            path="/admin/category"
+            isAdmin={true}
+            component={Category}
           />
 
           <ProtectedRoute

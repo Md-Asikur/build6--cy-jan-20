@@ -36,6 +36,8 @@ const payment = require("./routes/paymentRoute");
 const like = require("./routes/like");
 const comment = require("./routes/comment");
 const commentRouter = require("./routes/commentRouter");
+const categoryRouter = require("./routes/categoryRouter");
+
 
 //errors
 
@@ -46,6 +48,7 @@ app.use("/api/v1", order);
 app.use("/api/v1", payment);
 app.use("/api/v1", like);
 app.use("/api/v1", commentRouter);
+app.use("/api/v1", categoryRouter);
 // //hosting
  app.use(express.static(path.join(__dirname, "./frontend/build")));
 

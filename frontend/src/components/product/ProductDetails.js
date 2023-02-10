@@ -30,6 +30,7 @@ import Comments from "./comments/Comments";
 import { createComment, getComments } from "../../actions/commentAction";
 import Loading from "./editor/Loading";
 import Pagination from "./editor/Pagination.tsx";
+import ProductCard from "../Home/ProductCard";
 const ProductDetails = ({ match }) => {
   const dispatch = useDispatch();
   const alert = useAlert();
@@ -41,10 +42,12 @@ const ProductDetails = ({ match }) => {
   //const blogId = useParams().slug;
   const history = useHistory();
   const { product, loading, error } = useSelector((state) => state.productDetails);
+  const { products } = useSelector((state) => state.products);
 
   const { success, error: reviewError } = useSelector((state) => state.newReview);
   const { user } = useSelector((state) => state.user);
-
+  const procat = product?.category
+  console.log(procat)
   const options = {
     size: "large",
     value: product.ratings,
@@ -288,7 +291,27 @@ const ProductDetails = ({ match }) => {
           ) : (
             <p className="noReviews">No Reviews Yet</p>
             )} */}
-
+          <div>
+            <h1
+              style={{
+                textAlign: "center",
+                fontSize: "35px",
+                fontWeight: "600",
+                fontFamily: "cursive",
+              }}
+            >
+              Related Products
+            </h1>
+            <div style={{ display: "flex" }}>
+              {products?.map((product) => {
+                return (
+                  product?.category === procat && (
+                    <ProductCard key={product._id} product={product} />
+                  )
+                );
+              })}
+            </div>
+          </div>
           <div style={{ padding: "13px" }}>
             {user ? (
               <Input callback={handleComment} />

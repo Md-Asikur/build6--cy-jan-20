@@ -44,10 +44,10 @@ exports.getAllProducts = catchAsyncErrors(async (req, res, next) => {
   // return next(new ErrorHandler("this is my err",500))
     const resultPerPage = 6;
     const productsCount = await Product.countDocuments();
-    const apiFeature = new ApiFeatures(Product.find(), req.query)
+    const apiFeature = new ApiFeatures(Product.find().sort("-createdAt"), req.query)
       .search()
       .filter()
-      // .pagination(resultPerPage);
+      .pagination(resultPerPage);
 
      let products = await apiFeature.query;
 
@@ -65,6 +65,15 @@ exports.getAllProducts = catchAsyncErrors(async (req, res, next) => {
        filteredProductsCount,
      });
     // res.status(200).json({msg:"Route Is Runnig"})
+})
+//admin all products
+exports.getAllProductsAdmin = catchAsyncErrors(async (req, res) => {
+   try {
+      const products = await Product.find().sort("-createdAt")
+      res.json({ products })
+    } catch (err) {
+      return res.status(500).json({ msg: err.message })
+    }
 })
 // Update Product -- Admin
 

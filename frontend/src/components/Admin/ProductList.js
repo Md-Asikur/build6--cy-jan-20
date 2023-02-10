@@ -7,6 +7,7 @@ import {
   clearErrors,
   getAdminProduct,
   deleteProduct,
+  getAllAdminProducts,
 } from "../../actions/productAction";
 import { Link } from "react-router-dom";
 import { useAlert } from "react-alert";
@@ -24,7 +25,7 @@ const ProductList = ({ history }) => {
   const alert = useAlert();
 
   const { error, products } = useSelector((state) => state.products);
-
+   const { all_admin_products } = useSelector((state) => state.allAdminProducts);
   const { error: deleteError, isDeleted } = useSelector(
     (state) => state.product
   );
@@ -49,7 +50,7 @@ const ProductList = ({ history }) => {
       history.push("/admin/dashboard");
       dispatch({ type: DELETE_PRODUCT_RESET });
     }
-
+    dispatch(getAllAdminProducts());
     dispatch(getAdminProduct());
   }, [dispatch, alert, error, deleteError, history, isDeleted]);
 
@@ -108,16 +109,24 @@ const ProductList = ({ history }) => {
 
   const rows = [];
 
-  products &&
-    products.forEach((item) => {
-      rows.push({
-        id: item._id,
-        stock: item.Stock,
-        price: item.price,
-        name: item.name,
-      });
+  // products &&
+  //   products.forEach((item) => {
+  //     rows.push({
+  //       id: item._id,
+  //       stock: item.Stock,
+  //       price: item.price,
+  //       name: item.name,
+  //     });
+  //   });
+all_admin_products &&
+  all_admin_products.forEach((item) => {
+    rows.push({
+      id: item._id,
+      stock: item.Stock,
+      price: item.price,
+      name: item.name,
     });
-
+  });
   return (
     <Fragment>
       <MetaData title={`ALL PRODUCTS - Admin`} />

@@ -32,6 +32,8 @@ import {
   DELETE_REVIEW_FAIL,
   DELETE_REVIEW_RESET,
   CLEAR_ERRORS,
+  ALL_ADMIN_PRODUCT_FAIL,
+  ALL_ADMIN_PRODUCT_SUCCESS,
 } from "../constants/productConstants";
 
 export const productsReducer = (state = { products: [] }, action) => {
@@ -58,6 +60,35 @@ export const productsReducer = (state = { products: [] }, action) => {
       };
     case ALL_PRODUCT_FAIL:
     case ADMIN_PRODUCT_FAIL:
+      return {
+        loading: false,
+        error: action.payload,
+      };
+
+    case CLEAR_ERRORS:
+      return {
+        ...state,
+        error: null,
+      };
+    default:
+      return state;
+  }
+};
+export const allProductsReducerAdmin = (state = { all_admin_products: [] }, action) => {
+  switch (action.type) {
+    case ADMIN_PRODUCT_REQUEST:
+      return {
+        loading: true,
+        all_admin_products: [],
+      };
+
+    case ALL_ADMIN_PRODUCT_SUCCESS:
+      return {
+        loading: false,
+        all_admin_products: action.payload,
+      };
+
+    case ALL_ADMIN_PRODUCT_FAIL:
       return {
         loading: false,
         error: action.payload,

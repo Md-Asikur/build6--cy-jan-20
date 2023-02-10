@@ -12,30 +12,32 @@ import SpellcheckIcon from "@mui/icons-material/Spellcheck";
 import AttachMoneyIcon from "@mui/icons-material/AttachMoney";
 import SideBar from "./Sidebar";
 import { NEW_PRODUCT_RESET } from "../../constants/productConstants";
+import { getCategories } from "../../actions/categoryAction";
 
 const NewProduct = ({ history }) => {
   const dispatch = useDispatch();
   const alert = useAlert();
 
   const { loading, error, success } = useSelector((state) => state.newProduct);
-
+  const categories = useSelector((state) => state.category);
+  
   const [name, setName] = useState("");
   const [price, setPrice] = useState(0);
   const [description, setDescription] = useState("");
-  const [category, setCategory] = useState("");
+  const [category, setCategory] = useState([]);
   const [Stock, setStock] = useState(0);
   const [images, setImages] = useState([]);
   const [imagesPreview, setImagesPreview] = useState([]);
 
-  const categories = [
-    "Laptop",
-    "Footwear",
-    "Bottom",
-    "Tops",
-    "Attire",
-    "Camera",
-    "SmartPhones",
-  ];
+  // const categories = [
+  //   "Laptop",
+  //   "Footwear",
+  //   "Bottom",
+  //   "Tops",
+  //   "Attire",
+  //   "Camera",
+  //   "SmartPhones",
+  // ];
 
   useEffect(() => {
     if (error) {
@@ -136,11 +138,16 @@ const NewProduct = ({ history }) => {
               <AccountTreeIcon />
               <select onChange={(e) => setCategory(e.target.value)}>
                 <option value="">Choose Category</option>
-                {categories.map((cate) => (
-                  <option key={cate} value={cate}>
-                    {cate}
-                  </option>
-                ))}
+                {categories && categories?.map((cate) => 
+                {
+                  return (
+                    <option key={cate?._id} value={cate?.name}>
+                      {cate?.name}
+                    </option>
+                  );
+                 
+                 }
+                )}
               </select>
             </div>
 

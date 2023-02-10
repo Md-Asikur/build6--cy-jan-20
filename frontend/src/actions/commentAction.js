@@ -44,7 +44,7 @@ export const getComments = (
   id, num
 ) => async(dispatch) => {
   try {
-    let limit = 4;
+    let limit = 2;
 
     const res = await getAPI(`comments/product/${id}?page=${num}&limit=${limit}`)
 

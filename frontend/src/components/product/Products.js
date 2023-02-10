@@ -10,17 +10,18 @@ import { useAlert } from "react-alert";
 import Typography from "@material-ui/core/Typography";
 import MetaData from "../layout/MetaData";
 import { useParams,Link} from "react-router-dom"
-const categories = [
-  "Laptop",
-  "Footwear",
-  "Bottom",
-  "Tops",
-  "Attire",
-  "Camera",
-  "SmartPhones",
-];
+// const categories = [
+//   "Laptop",
+//   "Footwear",
+//   "Bottom",
+//   "Tops",
+//   "Attire",
+//   "Camera",
+//   "SmartPhones",
+// ];
 
 const Products = () => {
+  const categories = useSelector((state) => state.category);
   const dispatch = useDispatch();
 const params=useParams()
   const alert = useAlert();
@@ -91,13 +92,13 @@ const params=useParams()
               <Link to="/">Categories</Link>
             </Typography>
             <ul className="categoryBox">
-              {categories.map((category) => (
+              {categories && categories.map((category) => (
                 <li
                   className="category-link"
-                  key={category}
-                  onClick={() => setCategory(category)}
+                  key={category._id}
+                  onClick={() => setCategory(category.name)}
                 >
-                  {category}
+                  {category.name}
                 </li>
               ))}
             </ul>
@@ -116,7 +117,7 @@ const params=useParams()
               />
             </fieldset>
           </div>
-          {resultPerPage <= count && (//condition create by me
+          {resultPerPage <= count && ( //condition create by me
             <div className="paginationBox">
               <Pagination
                 activePage={currentPage}

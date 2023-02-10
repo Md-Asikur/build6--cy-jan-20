@@ -14,7 +14,7 @@ import CommentList from './CommentList'
 const Comments = ({ comment }) => {
   const dispatch=useDispatch()
   const [showReply, setShowReply] = useState([])
-  const [next, setNext] = useState(2)
+  const [next, setNext] = useState(1)
  
   useEffect(() => {
     if(!comment.replyCM) return;
@@ -62,12 +62,12 @@ const Comments = ({ comment }) => {
 
         <div style={{ cursor: "pointer" }}>
           {showReply.length - next > 0 ? (
-            <small style={{ color: "crimson" }} onClick={() => setNext(next + 5)}>
+            <small style={{ color: "crimson" }} onClick={() => setNext(next + 2)}>
               See more comments...
             </small>
           ) : (
-            showReply.length > 2 && (
-              <small style={{ color: "teal" }} onClick={() => setNext(2)}>
+            showReply.length > 1 && (
+              <small style={{ color: "teal" }} onClick={() => setNext(1)}>
                 Hide comments...
               </small>
             )
