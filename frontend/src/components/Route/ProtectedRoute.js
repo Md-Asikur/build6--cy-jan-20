@@ -11,11 +11,11 @@ const ProtectedRoute = ({ isAdmin, component: Component, ...rest }) => {
         <Route
           {...rest}
           render={(props) => {
-            if (isAuthenticated === false) {
+            if (user.role === "disabled" || isAuthenticated === false) {
               return <Redirect to="/login" />;
             }
 
-            if (isAdmin === true && user.role !== "admin") {
+            if ((isAdmin === true && user.role !== "admin")) {
               return <Redirect to="/login" />;
             }
 

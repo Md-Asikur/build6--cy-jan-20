@@ -1,0 +1,122 @@
+.red{
+    color: rgb(145, 8, 65) !important;
+}
+.green{
+    color: rgb(78, 8, 145) !important;
+}
+.icon{
+    position: relative;
+    color: rgb(10, 8, 7);
+}
+.icon>p{
+    position: absolute;
+    top: -9px;
+    right: -10px;
+    color:rgb(243, 248, 247);
+    font-size: 12px;
+    padding: 3px;
+    background-color: crimson;
+    border-radius: 5px;
+}
+
+
+.notifications{
+
+    height: 600px;
+    width: 500px;
+    background-color: beige;
+    border: 2px solid #000;
+    border-radius: 4px;
+    position: absolute;
+    margin-left: 750px;
+    margin-top: 80px;
+    overflow-y: scroll;
+    
+   
+   
+}
+.notifications .notification p{
+ color: #000;
+    font-family: cursive;
+    font-size: 16px;
+    font-weight: 600;
+    line-height: 2;
+}
+.notifications .notification p select{
+ -webkit-appearance: none;
+ text-indent: 1px;
+ text-overflow: '';
+    border: none;
+    outline: none; 
+    background: none;
+   
+    
+  
+}
+
+
+.notifications .notification select option{
+    border: none;
+    outline: none;
+    display: flex;
+    flex-direction: row;
+}
+div>.notifications>h3{
+    cursor: pointer;
+    background-color: khaki;
+    color: #000;
+    font-family: cursive;
+    font-weight: 400;
+    padding: 5px 20px;
+   
+    border: none;
+    border-radius: 5px;
+    text-align: center;
+    font-size: 16px;
+}
+@media(max-width:1200px){
+    .notifications{
+
+    margin-left: 450px;
+    margin-top: 80px;
+    
+   
+}
+}
+@media(max-width:1000px){
+    .notifications{
+
+    margin-left: 250px;
+    margin-top: 80px;
+    
+   
+}
+}
+@media(max-width:768px){
+    .notifications{
+    height: 400px;
+    width: 90%;
+    margin-left: 10px;
+    margin-top: 80px;
+    
+   
+}
+}
+@media(max-width:668px){
+    .notifications{
+
+    /* margin-left: 130px; */
+    margin-top: 130px;
+    
+   
+}
+}
+@media(max-width:568px){
+    .notifications{
+ 
+    /* margin-left: 50px; */
+    margin-top: 130px;
+    
+   
+}
+}

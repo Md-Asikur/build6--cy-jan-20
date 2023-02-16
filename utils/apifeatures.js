@@ -18,13 +18,9 @@ class ApiFeatures {
             $regex: this.queryStr.keyword,
             $options: "i",
           },
-        }
-        
-      
-        
+        },
       ],
     };
-     
 
     this.query = this.query.find({ ...keyword });
     return this;
@@ -33,7 +29,7 @@ class ApiFeatures {
   filter() {
     const queryCopy = { ...this.queryStr };
     //   Removing some fields for category
-    const removeFields = ["keyword", "page", "limit"];
+    const removeFields = ["keyword", "sort", "page", "limit"];
 
     removeFields.forEach((key) => delete queryCopy[key]);
 
@@ -53,6 +49,16 @@ class ApiFeatures {
     const skip = resultPerPage * (currentPage - 1);
 
     this.query = this.query.limit(resultPerPage).skip(skip);
+
+    return this;
+  }
+  sorting() {
+    if (this.queryStr.sort) {
+      const sortBy = this.queryStr.sort.split(",").join(" ");
+      this.query = this.query.sort(sortBy);
+    } else {
+      this.query = this.query.sort("-createdAt");
+    }
 
     return this;
   }

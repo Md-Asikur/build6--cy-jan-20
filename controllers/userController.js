@@ -46,7 +46,10 @@ exports.loginUser = catchAsyncErrors(async (req, res, next) => {
   if (!user) {
     return next(new ErrorHandler("Invalid email or password", 401));
   }
-
+  const {role}=user
+ if (role === "disabled"){
+   return next(new ErrorHandler("This account has been suspended! Try to contact the admin", 401));
+    }
   const isPasswordMatched = await user.comparePassword(password);
 
   if (!isPasswordMatched) {

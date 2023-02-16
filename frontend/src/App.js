@@ -1,4 +1,4 @@
-import { BrowserRouter, Route, Switch } from "react-router-dom";
+import { BrowserRouter, Route, Switch, useParams } from "react-router-dom";
 import "./App.css";
 
 import { useState,useEffect } from "react";
@@ -13,7 +13,7 @@ import LoginSignUp from "./components/User/AllLogReg";
 
 
 import store from "./Store"
-import { loadUser } from "./actions/userAction";
+import { getUserDetails, loadUser } from "./actions/userAction";
 import UserOptions from "./components/layout/Header/UserOptions";
 import {  useDispatch, useSelector } from "react-redux";
 import Profile from "./components/User/Profile";
@@ -49,12 +49,16 @@ import OtherInfo from "./components/User/OtherInfo/OtherInfo";
 import Category from "./components/category/category";
 import { getCategories } from "./actions/categoryAction";
 import { getAllAdminProducts, getProduct } from "./actions/productAction";
+import { get_notification } from "./actions/notificationAction";
+import Notifications from "./components/Notifications/Notifications";
 
 
 
 function App() {
+  
   const dispatch=useDispatch()
   const { isAuthenticated, user } = useSelector((state) => state.user);
+  const { loading, error, userDetails } = useSelector((state) => state.userDetails);
   const [stripeApiKey, setStripeApiKey] = useState("");
   
   async function getStripeApiKey() {
@@ -80,7 +84,7 @@ function App() {
     dispatch(getCategories());
     dispatch(getProduct())
     dispatch(getAllAdminProducts());
-  
+   
   }, [dispatch]);
 
   return (
@@ -94,6 +98,7 @@ function App() {
           </Elements>
         )}
         <Switch>
+          <ProtectedRoute exact path="/notifications" component={Notifications} />
           <Route exact path="/" component={Home} />
           <Route exact path="/products" component={Products} />
           <Route exact path="/product/:id" component={ProductDetails} />

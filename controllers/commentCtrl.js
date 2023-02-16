@@ -2,6 +2,7 @@
 const Comments = require('../models/commentModel')
 
 const mongoose = require("mongoose");
+const NotificationModel = require('../models/NotificationModel');
 
 
 
@@ -31,6 +32,7 @@ const commentCtrl = {
         blog_id,
         blog_user_id
       })
+       
 
       const data = {
         ...newComment,
@@ -38,10 +40,16 @@ const commentCtrl = {
         createdAt: new Date().toISOString()
       }
 
-      
+      await NotificationModel.create({
+        subject: `${req.user.name} comment on your product`,
+        user: req.user,
+        // content:content
+        prid: blog_id,
+      });
+    
        await newComment.save()
-
-      return res.json(newComment)
+      
+      return res.json(newComment);
       
     } catch (err) {
       return res.status(500).json({msg: err.message})
@@ -178,7 +186,12 @@ const commentCtrl = {
         reply_user: reply_user,
         createdAt: new Date().toISOString()
       }
-
+ await NotificationModel.create({
+   subject: `${req.user.name} reply comment on your product`,
+   user: req.user,
+   prid: blog_id,
+ });
+    
      
 
       await newComment.save()

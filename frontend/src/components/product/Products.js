@@ -9,7 +9,8 @@ import Slider from "@material-ui/core/Slider";
 import { useAlert } from "react-alert";
 import Typography from "@material-ui/core/Typography";
 import MetaData from "../layout/MetaData";
-import { useParams,Link} from "react-router-dom"
+import { useParams,Link, useHistory} from "react-router-dom"
+import Search from "./Search";
 // const categories = [
 //   "Laptop",
 //   "Footwear",
@@ -31,7 +32,7 @@ const params=useParams()
   const [category, setCategory] = useState("");
 
   const [ratings, setRatings] = useState(0);
-
+  const [sort, setSort] =useState("")
   const {
     products,
     loading,
@@ -40,9 +41,18 @@ const params=useParams()
     resultPerPage,
     filteredProductsCount,
   } = useSelector((state) => state.products);
-
-  const keyword = params.keyword;
-
+   const [keywords, setKeyword] = useState("");
+ 
+  const keyword = params.keyword; //this is for params search for /:keyword
+const history = useHistory();
+const searchSubmitHandler = (e) => {
+  e.preventDefault();
+  if (keywords.trim()) {
+    history.push(`/products/${keywords}`);
+  } else {
+    history.push("/products");
+  }
+};
   const setCurrentPageNo = (e) => {
     setCurrentPage(e);
   };
@@ -58,8 +68,8 @@ const params=useParams()
       dispatch(clearErrors());
     }
 
-    dispatch(getProduct(keyword, currentPage, price, category, ratings));
-  }, [dispatch, keyword, currentPage, price, category, ratings, alert, error]);
+    dispatch(getProduct(keyword, currentPage, price, category, ratings, sort));
+  }, [dispatch, keyword, currentPage, price, category, ratings, alert, error,sort]);
 
   return (
     <Fragment>
@@ -68,13 +78,35 @@ const params=useParams()
       ) : (
         <Fragment>
           <MetaData title="PRODUCTS -- ECOMMERCE" />
+
+          {/* <div className="searchBoxx">
+            <input
+              type="text"
+              placeholder="Search a Product ..."
+              value={keyword}
+              onChange={(e) => setKeyword(e.target.value.toLowerCase())}
+            />
+          </div> */}
+          <form className="searchBoxInProduct" onSubmit={searchSubmitHandler}>
+            <input
+              type="text"
+              placeholder="Search a Product ..."
+              onChange={(e) => setKeyword(e.target.value)}
+            />
+            <input type="submit" value="Search" />
+          </form>
           <h2 className="productsHeading">Products</h2>
 
           <div className="products">
-            {products &&
-              products.map((product) => (
+            {products?.length <= 0 ? (
+             <h1>404 NOT FOUND!</h1>
+            ) : (
+              
+                products?.map((product) => (
                 <ProductCard key={product._id} product={product} />
-              ))}
+                ))
+            
+            )}
           </div>
 
           <div className="filterBox">
@@ -87,20 +119,31 @@ const params=useParams()
               min={0}
               max={25000}
             />
-
+            <div className="row sort">
+              <span>Sort By: </span>
+              <select value={sort} onChange={(e) => setSort(e.target.value)}>
+                <option value="">Newest</option>
+                <option value="name">name</option>
+                <option value="-Stock">stock</option>
+                <option value="-ratings">ratings</option>
+                <option value="-price">High-Low Price</option>
+                <option value="price">Low-High Price</option>
+              </select>
+            </div>
             <Typography>
               <Link to="/">Categories</Link>
             </Typography>
             <ul className="categoryBox">
-              {categories && categories.map((category) => (
-                <li
-                  className="category-link"
-                  key={category._id}
-                  onClick={() => setCategory(category.name)}
-                >
-                  {category.name}
-                </li>
-              ))}
+              {categories &&
+                categories.map((category) => (
+                  <li
+                    className="category-link"
+                    key={category._id}
+                    onClick={() => setCategory(category.name)}
+                  >
+                    {category.name}
+                  </li>
+                ))}
             </ul>
 
             <fieldset>
@@ -117,6 +160,7 @@ const params=useParams()
               />
             </fieldset>
           </div>
+
           {resultPerPage <= count && ( //condition create by me
             <div className="paginationBox">
               <Pagination

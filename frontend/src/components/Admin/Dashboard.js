@@ -25,7 +25,7 @@ import {
 } from "chart.js";
 import CreateButton from "./CreateButton.js";
 
-
+import NotificationsActiveIcon from "@mui/icons-material/NotificationsActive";
 
 
 ChartJS.register(
@@ -111,6 +111,7 @@ var options = {
 
       <div className="dashboardContainer">
         <CreateButton />
+        
         <Typography component="h1">Dashboard</Typography>
 
         <div className="dashboardSummary">

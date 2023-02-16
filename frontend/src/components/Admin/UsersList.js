@@ -12,7 +12,7 @@ import DeleteIcon from "@mui/icons-material/Delete";
 import SideBar from "./Sidebar";
 import { getAllUsers, clearErrors, deleteUser } from "../../actions/userAction";
 import { DELETE_USER_RESET } from "../../constants/userConstants";
-import { Avatar } from "@mui/material";
+import { Avatar, CircularProgress } from "@mui/material";
 import LaunchIcon from "@mui/icons-material/Launch";
 const UsersList = ({ history }) => {
   const dispatch = useDispatch();
@@ -85,8 +85,10 @@ const UsersList = ({ history }) => {
       minWidth: 150,
       flex: 0.3,
       cellClassName: (params) => {
-        return params.getValue(params.id, "role") === "admin" ? "greenColor" : "redColor";
+        return params.getValue(params.id, "role") === "user" ? "greenColor" : "redColor" 
+         
       },
+    
     },
 
     {

@@ -272,10 +272,10 @@ const ProductDetails = ({ match }) => {
               </Button>
             </DialogActions>
           </Dialog>
-          {/* <List.Item
-              
+          {/*<List.Item
             actions={[<LikeDislikes product productId={productId} userId={user?._id} />]}
           ></List.Item>
+          {/*
           <Comment
             postId={product._id}
             CommentLists={CommentLists}

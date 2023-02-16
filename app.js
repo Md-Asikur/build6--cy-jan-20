@@ -37,6 +37,7 @@ const like = require("./routes/like");
 const comment = require("./routes/comment");
 const commentRouter = require("./routes/commentRouter");
 const categoryRouter = require("./routes/categoryRouter");
+const notificationRouter = require("./routes/notificationRouter");
 
 
 //errors
@@ -49,6 +50,7 @@ app.use("/api/v1", payment);
 app.use("/api/v1", like);
 app.use("/api/v1", commentRouter);
 app.use("/api/v1", categoryRouter);
+app.use("/api/v1", notificationRouter);
 // //hosting
  app.use(express.static(path.join(__dirname, "./frontend/build")));
 

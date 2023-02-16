@@ -1,3 +1,11 @@
+.searchBoxx{
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 50px;
+  width: 500px;
+}
+
 .productsHeading {
   margin: 2vmax auto;
   width: 15vw;

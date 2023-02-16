@@ -11,7 +11,15 @@ input::-webkit-inner-spin-button {
   -webkit-appearance: none;
   margin: 0;
 }
+/* emoji align react-quill-editor */
+div>.ql-editor{
+  display: flex;
+}
+div.emoji{
+  display: inline;
+}
 
+/* emoji align react-quill-editor */
 /* Firefox */
 input[type="number"] {
   -moz-appearance: textfield;

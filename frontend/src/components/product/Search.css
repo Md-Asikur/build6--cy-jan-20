@@ -1,3 +1,4 @@
+
 .searchBox {
   width: 100vw;
   height: 100vh;
@@ -53,5 +54,90 @@
     height: 10%;
     width: 30%;
     font: 300 4vw "Roboto";
+  }
+}
+/* Search box product */
+.searchBoxInProduct {
+  width:100%;
+  height: 110px;
+ 
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  
+ position: fixed;
+ overflow: hidden;
+ z-index: 997947949;
+ top: -35px;
+ left: 0px;
+ 
+}
+
+.searchBoxInProduct > input[type="text"] {
+  box-shadow: 0 0 5px rgba(0, 0, 0, 0.274);
+  background-color: white;
+  border: none;
+  color: rgba(0, 0, 0, 0.637);
+  padding: 1.6vmax 2vmax;
+  width: 50%;
+  outline: none;
+  border-radius: 0%;
+  font: 300 1.1vmax cursive;
+  box-sizing: border-box;
+  height: 8%;
+}
+
+.searchBoxInProduct > input[type="submit"] {
+  height: 8%;
+  border-radius: 0%;
+  background-color: tomato;
+  border: none;
+  padding: 1.6vmax;
+  width: 10%;
+  font: 300 1.1vmax "Roboto";
+  cursor: pointer;
+  color: white;
+  transition: all 0.5s;
+}
+
+.searchBoxInProduct > input[type="submit"]:hover {
+  background-color: rgb(55, 97, 214);
+}
+
+@media screen and (max-width: 600px) {
+  .searchBoxInProduct {
+  width:100%;
+  height: 130px;
+ 
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  float: right;
+ position: fixed;
+ overflow: hidden;
+ z-index: 997947949;
+ padding: 20px 80px;
+ box-sizing: border-box;
+ 
+
+  top: -52px;
+ left: 0px;
+}
+
+  .searchBoxInProduct > input[type="text"] {
+   
+    width: 100%;
+    font: 300 3vw cursive;
+    height: 30%;
+    padding: 10px 20px;
+  }
+
+  .searchBoxInProduct > input[type="submit"] {
+     
+      width: 30%;
+    font: 300 4vw cursive;
+    height: 30%;;
+    font: 300 3vw "Roboto";
+    padding: 10px 30px 10px 10px;
   }
 }

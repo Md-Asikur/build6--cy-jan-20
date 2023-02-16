@@ -15,7 +15,8 @@ const LoginSignUp = () => {
   const history = useHistory();
   const location = useLocation();
   const { error, loading, isAuthenticated } = useSelector((state) => state.user);
-
+   const { users } = useSelector((state) => state.allUsers);
+//console.log(users)
   const loginTab = useRef(null);
   const registerTab = useRef(null);
   const switcherTab = useRef(null);
@@ -51,6 +52,16 @@ const LoginSignUp = () => {
     dispatch(register(myForm));
   };
 
+  // useEffect(() => {
+    
+  //   users?.map((user) => {
+  //     if (user.role === "disabled") {
+  //      alert("Your Account is Disabled By Admin");
+  //     }
+  // })
+   
+  // }, [])
+  
   const registerDataChange = (e) => {
     if (e.target.name === "avatar") {
       const reader = new FileReader();

@@ -33,13 +33,14 @@ import {
 } from "./reducers/orderReducer";
 import commentReducer from "./reducers/commentReducer";
 import categoryReducer from "./reducers/categoryReducer";
-
+import { notificationReducer } from "./reducers/notificationReducer";
 
 
 const reducer = combineReducers({
   products: productsReducer,
   productDetails: productDetailsReducer,
   allAdminProducts: allProductsReducerAdmin,
+  allNotifications:notificationReducer,
   comments: commentReducer,
   category: categoryReducer,
   user: userReducer,

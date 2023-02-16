@@ -16,11 +16,12 @@ import {
 import Loader from "../layout/Loader/Loader";
 
 const UpdateUser = ({ history, match }) => {
+ 
   const dispatch = useDispatch();
   const alert = useAlert();
 
-  const { loading, error, user } = useSelector((state) => state.userDetails);
-
+  const { loading, error, userDetails } = useSelector((state) => state.userDetails);
+ 
   const {
     loading: updateLoading,
     error: updateError,
@@ -33,14 +34,15 @@ const UpdateUser = ({ history, match }) => {
 
   const userId = match.params.id;
 
+
   useEffect(() => {
-    if (user && user._id !== userId) {
+    if (userId) {
       dispatch(getUserDetails(userId));
-    } else {
-      setName(user.name);
-      setEmail(user.email);
-      setRole(user.role);
+      setName(userDetails?.name);
+      setEmail(userDetails?.email);
+      setRole(userDetails?.role);
     }
+
     if (error) {
       alert.error(error);
       dispatch(clearErrors());
@@ -56,7 +58,18 @@ const UpdateUser = ({ history, match }) => {
       history.push("/admin/users");
       dispatch({ type: UPDATE_USER_RESET });
     }
-  }, [dispatch, alert, error, history, isUpdated, updateError, user, userId]);
+  }, [
+    dispatch,
+    userId,
+    userDetails?.name,
+    userDetails?.email,
+    userDetails?.role,
+    alert,
+    error,
+    history,
+    isUpdated,
+    updateError,
+  ]);
 
   const updateUserSubmitHandler = (e) => {
     e.preventDefault();
@@ -79,10 +92,7 @@ const UpdateUser = ({ history, match }) => {
           {loading ? (
             <Loader />
           ) : (
-            <form
-              className="createProductForm"
-              onSubmit={updateUserSubmitHandler}
-            >
+            <form className="createProductForm" onSubmit={updateUserSubmitHandler}>
               <h1>Update User</h1>
 
               <div>
@@ -112,15 +122,14 @@ const UpdateUser = ({ history, match }) => {
                   <option value="">Choose Role</option>
                   <option value="admin">Admin</option>
                   <option value="user">User</option>
+                  <option value="disabled">Disabled</option>
                 </select>
               </div>
 
               <Button
                 id="createProductBtn"
                 type="submit"
-                disabled={
-                  updateLoading ? true : false || role === "" ? true : false
-                }
+                disabled={updateLoading ? true : false || role === "" ? true : false}
               >
                 Update
               </Button>

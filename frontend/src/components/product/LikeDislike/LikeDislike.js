@@ -27,7 +27,11 @@ function LikeDislikes(props) {
   let variable = {};
 
   if (props.comment) {
-    variable = { commentId: props.commentId, userId: props.userId };
+    variable = {
+      commentId: props.commentId,
+      productId: props.productId,
+      userId: props.userId,
+    };
     
   } else {
     variable = { productId: props.productId, userId: props.userId };
@@ -70,7 +74,7 @@ function LikeDislikes(props) {
         alert("Failed to get dislikes");
       }
     });
-  }, [Likes,Dislikes]);
+  }, []);
 
   const onLike = () => {
    if (LikeAction === null) {

@@ -2,6 +2,8 @@ const express = require("express");
 const router = express.Router();
 const { Like } = require("../models/Like");
 const { Dislike } = require("../models/Dislike");
+const NotificationModel = require("../models/NotificationModel");
+const { isAuthenticatedUser } = require("../middleware/auth");
 
 //=================================
 //             Likes DisLikes
@@ -9,11 +11,11 @@ const { Dislike } = require("../models/Dislike");
 
 router.post("/getLikes", (req, res) => {
   let variable = {};
-  if (req.body.productId) {
-    variable = { productId: req.body.productId };
-  } else {
+  // if (req.body.productId) {
+  //   variable = { productId: req.body.productId };
+  // } else {
     variable = { commentId: req.body.commentId };
-  }
+  // }
 
   Like.find(variable).exec((err, likes) => {
     if (err) return res.status(400).send(err);
@@ -23,11 +25,11 @@ router.post("/getLikes", (req, res) => {
 
 router.post("/getDislikes", (req, res) => {
   let variable = {};
-  if (req.body.productId) {
-    variable = { productId: req.body.productId };
-  } else {
+  // if (req.body.productId) {
+  //   variable = { productId: req.body.productId };
+  // } else {
     variable = { commentId: req.body.commentId };
-  }
+  // }
 
   Dislike.find(variable).exec((err, dislikes) => {
     if (err) return res.status(400).send(err);
@@ -35,62 +37,98 @@ router.post("/getDislikes", (req, res) => {
   });
 });
 
-router.post("/upLike", (req, res) => {
+router.post("/upLike", isAuthenticatedUser,async(req, res) => {
   let variable = {};
-  if (req.body.productId) {
-    variable = { productId: req.body.productId, userId: req.body.userId };
-  } else {
-    variable = { commentId: req.body.commentId, userId: req.body.userId };
-  }
+  // if (req.body.productId) {
+  //   variable = { productId: req.body.productId, userId: req.body.userId };
+  // } else {
+    variable = {
+      commentId: req.body.commentId,
+      productId: req.body.productId,
+      userId: req.body.userId,
+    };
+  // }
 
   const like = new Like(variable);
+   
   //save the like information data in MongoDB
-  like.save((err, likeResult) => {
-    if (err) return res.json({ success: false, err });
-    //In case disLike Button is already clicked, we need to decrease the dislike by 1
-    Dislike.findOneAndDelete(variable).exec((err, disLikeResult) => {
-      if (err) return res.status(400).json({ success: false, err });
-      res.status(200).json({ success: true });
-    });
-  });
+  await NotificationModel.create({
+     subject: `${req.user.name} liked on your Product`,
+     user: req.user,
+     prid: req.body.productId,
+   });
+ like.save((err, likeResult) => {
+  
+
+   if (err) return res.json({ success: false, err });
+   //In case disLike Button is already clicked, we need to decrease the dislike by 1
+   Dislike.findOneAndDelete(variable).exec((err, disLikeResult) => {
+     if (err) return res.status(400).json({ success: false, err });
+     res.status(200).json({ success: true });
+   });
+ });
+ 
+    
 });
 
-router.post("/unLike", (req, res) => {
+router.post("/unLike", isAuthenticatedUser,async(req, res) => {
   let variable = {};
-  if (req.body.productId) {
-    variable = { productId: req.body.productId, userId: req.body.userId };
-  } else {
-    variable = { commentId: req.body.commentId, userId: req.body.userId };
-  }
-
+  // if (req.body.productId) {
+  //   variable = { productId: req.body.productId, userId: req.body.userId };
+  // } else {
+    variable = {
+      commentId: req.body.commentId,
+      productId: req.body.productId,
+      userId: req.body.userId,
+    };
+  // }
+  await NotificationModel.create({
+    subject: `${req.user.name} Unliked on your Product`,
+    user: req.user,
+    prid: req.body.productId,
+  });
   Like.findOneAndDelete(variable).exec((err, result) => {
     if (err) return res.status(400).json({ success: false, err });
     res.status(200).json({ success: true });
   });
 });
 
-router.post("/unDisLike", (req, res) => {
+router.post("/unDisLike", isAuthenticatedUser,async(req, res) => {
   let variable = {};
-  if (req.body.productId) {
-    variable = { productId: req.body.productId, userId: req.body.userId };
-  } else {
-    variable = { commentId: req.body.commentId, userId: req.body.userId };
-  }
-
+  // if (req.body.productId) {
+  //   variable = { productId: req.body.productId, userId: req.body.userId };
+  // } else {
+    variable = {
+      commentId: req.body.commentId,
+      productId: req.body.productId,
+      userId: req.body.userId,
+    };
+  //}
+await NotificationModel.create({
+  subject: `${req.user.name} UnDisliked on your Product`,
+  user: req.user,
+  prid: req.body.productId,
+});
   Dislike.findOneAndDelete(variable).exec((err, result) => {
     if (err) return res.status(400).json({ success: false, err });
     res.status(200).json({ success: true });
   });
 });
 
-router.post("/upDisLike", (req, res) => {
+router.post("/upDisLike",isAuthenticatedUser,async (req, res) => {
   let variable = {};
-  if (req.body.productId) {
-    variable = { productId: req.body.productId, userId: req.body.userId };
-  } else {
-    variable = { commentId: req.body.commentId, userId: req.body.userId };
-  }
-
+  // if (req.body.productId) {
+  //   variable = { productId: req.body.productId, userId: req.body.userId };
+  // } else {
+    variable = { commentId: req.body.commentId,
+      productId: req.body.productId,
+      userId: req.body.userId, };
+  //}
+await NotificationModel.create({
+  subject: `${req.user.name} Dislike on your Product`,
+  user: req.user,
+  prid: req.body.productId,
+});
   const disLike = new Dislike(variable);
   //save the like information data in MongoDB
   disLike.save((err, dislikeResult) => {

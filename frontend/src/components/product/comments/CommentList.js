@@ -11,6 +11,7 @@ import {
 
 import Input from './Input'
 import LikeDislikes from '../LikeDislike/LikeDislike'
+import { useParams } from 'react-router-dom'
 
 // interface IProps {
 //   comment: IComment
@@ -27,10 +28,11 @@ const CommentList= ({
   const dispatch = useDispatch()
 
   const [edit, setEdit] = useState()
-
+  const productId = useParams().id;
+  console.log(productId)
   const handleReply = (body) => {
     if(!user) return;
-
+  
     const data = {
       user: user,
       blog_id: comment.blog_id,
@@ -90,56 +92,67 @@ const CommentList= ({
 
   return (
     <div className="w-100">
-      {
-        edit
-        ? <Input 
-          callback={handleUpdate} 
-          edit={edit}
-          setEdit={setEdit}
-        />
+      {edit ? (
+        <Input callback={handleUpdate} edit={edit} setEdit={setEdit} />
+      ) : (
+        <div className="comment_box">
+          <div
+            className="p-2"
+            dangerouslySetInnerHTML={{
+              __html: comment.content,
+            }}
+            style={{ display: "flex" }}
+          />
 
-        : <div className="comment_box">
-            <div className="p-2" dangerouslySetInnerHTML={{
-              __html: comment.content
-            }} />
- 
-            <div className="d-flex justify-content-between p-2">
-              <small style={{cursor: 'pointer'}}
-              onClick={() => setOnReply(!onReply)}>
-                {onReply ? '- Cancel -' :'- Reply -'}
-              </small>
+          <div className="d-flex justify-content-between p-2">
+            <small style={{ cursor: "pointer" }} onClick={() => setOnReply(!onReply)}>
+              {onReply ? "- Cancel -" : "- Reply -"}
+            </small>
 
-              <small className="d-flex">
-                <div className="comment_nav">
-                  {
-                    comment.blog_user_id === user?._id
-                    ? comment.user._id ===user._id
-                      ? Nav(comment)
-                      : <i className="fas fa-trash-alt mx-2"
-                      onClick={() => handleDelete(comment)} />
-                    : comment.user._id === user?._id && Nav(comment)
-                  }
-                </div>
+            <small className="d-flex">
+              <div className="comment_nav">
+                {comment.blog_user_id === user?._id || user?.role === "admin" ? (
+                  comment.user._id === user._id ? (
+                    Nav(comment)
+                  ) : (
+                    <>
+                      <div style={{ float: "right" }}>
+                        <i
+                          className="fa fa-trash-o"
+                          aria-hidden="true"
+                          onClick={() => handleDelete(comment)}
+                        />
+                        <i
+                          className="fa fa-pencil-square-o"
+                          aria-hidden="true"
+                          onClick={() => setEdit(comment)}
+                        />
+                      </div>
+                    </>
+                  )
+                ) : (
+                  comment.user._id === user?._id && Nav(comment)
+                )}
+              </div>
 
-                <div>
-                  { new Date(comment.createdAt).toLocaleString() }
-                </div>
-              </small>
-             
-            </div>
-            <LikeDislikes comment commentId={comment._id } userId={user?._id } allComment={comment} />
+              <div>{new Date(comment.createdAt).toLocaleString()}</div>
+            </small>
           </div>
-          
-      
-      }
+          <LikeDislikes
+            comment
+            productId={productId}
+            commentId={comment._id}
+            userId={user?._id}
+            allComment={comment}
+          />
+        </div>
+      )}
 
-      {
-        onReply && <Input callback={handleReply} />
-      }
-      
-      { children }
+      {onReply && <Input callback={handleReply} />}
+
+      {children}
     </div>
-  )
+  );
 }
 
 export default CommentList
