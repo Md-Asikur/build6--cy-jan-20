@@ -9,11 +9,10 @@ import { useHistory } from "react-router-dom";
 
 function LikeDislikes(props) {
   const [Likes, setLikes] = useState(0);
-  const [Like, setLike] = useState([]);
-   const [DisLike, setDisLike] = useState([]);
   const [Dislikes, setDislikes] = useState(0);
   const [LikeAction, setLikeAction] = useState(null);
   const [DislikeAction, setDislikeAction] = useState(null);
+  
    const { isAuthenticated } = useSelector((state) => state.user);
   const alert = useAlert();
   const history = useHistory();
@@ -21,31 +20,30 @@ function LikeDislikes(props) {
   
   //console.log("like filted", Like);
   //console.log("com", props.comments);
-   const cmusid = props.commentId;
-  const lkusid = Like.map((e) => e.commentId);
-  const dslkusid = DisLike.map((e) => e.commentId);
+  
+ 
   let variable = {};
 
-  if (props.comment) {
+ 
     variable = {
-      commentId: props.commentId,
-      productId: props.productId,
       userId: props.userId,
+      productId: props.productId,
+
+      commentId: props.commentId,
     };
-    
-  } else {
-    variable = { productId: props.productId, userId: props.userId };
-  }
+  
+  // } else {
+  //   variable = { productId: props.productId, userId: props.userId };
+  // }
 
   useEffect(() => {
     axios.post("/api/v1/getLikes", variable).then((response) => {
-      //console.log("getLikes", response.data);
+       //console.log("getLikes", response.data);
 
       if (response.data.success) {
         //How many likes does this video or comment have
         setLikes(response.data.likes?.length);
-         setLike(response.data.likes);
-
+        // setLike(response.data.likes);
 
         //if I already click this like button or not
         response.data.likes.map((like) => {
@@ -63,7 +61,7 @@ function LikeDislikes(props) {
       if (response.data.success) {
         //How many likes does this video or comment have
         setDislikes(response.data.dislikes?.length);
-       setDisLike(response.data.dislikes);
+        // setDisLike(response.data.dislikes);
         //if I already click this like button or not
         response.data.dislikes.map((dislike) => {
           if (dislike.userId === props.userId) {
@@ -74,7 +72,7 @@ function LikeDislikes(props) {
         alert("Failed to get dislikes");
       }
     });
-  }, []);
+  }, [variable]);
 
   const onLike = () => {
    if (LikeAction === null) {
@@ -142,7 +140,7 @@ const onAuth = () => {
       {isAuthenticated ? (
         <>
           {" "}
-          {cmusid !== lkusid ? (
+        
               <span
                 key="comment-basic-like"
                 onClick={onLike}
@@ -153,8 +151,8 @@ const onAuth = () => {
                 </Tooltip>
                 <span style={{ paddingLeft: "8px", cursor: "auto" }}>{Likes}</span>
               </span>
-            ):""}
-          &nbsp;&nbsp;
+          
+         
           <span
             key="comment-basic-dislike"
             onClick={onDisLike}

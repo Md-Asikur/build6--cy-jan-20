@@ -20,16 +20,16 @@ import { useParams } from 'react-router-dom'
 // }
 
 const CommentList= ({ 
-  children, comment, showReply, setShowReply
+  children, comment, showReply, setShowReply,match
 }) => {
   const [onReply, setOnReply] = useState(false)
   //const { auth } = useSelector((state: RootStore) => state)
   const { user } = useSelector((state) => state.user);
   const dispatch = useDispatch()
-
+const params=useParams()
   const [edit, setEdit] = useState()
-  const productId = useParams().id;
-  console.log(productId)
+  const productId = params.id
+  //console.log(productId)
   const handleReply = (body) => {
     if(!user) return;
   
@@ -140,8 +140,8 @@ const CommentList= ({
           </div>
           <LikeDislikes
             comment
-            productId={productId}
-            commentId={comment._id}
+           // productId={productId}
+            commentId={comment?._id}
             userId={user?._id}
             allComment={comment}
           />

@@ -14,7 +14,13 @@ router.post("/getLikes", (req, res) => {
   // if (req.body.productId) {
   //   variable = { productId: req.body.productId };
   // } else {
-    variable = { commentId: req.body.commentId };
+    variable = {
+      userId: req.body.userId,
+    productId: req.body.productId,
+
+    commentId: req.body.commentId,
+  
+    };
   // }
 
   Like.find(variable).exec((err, likes) => {
@@ -28,7 +34,13 @@ router.post("/getDislikes", (req, res) => {
   // if (req.body.productId) {
   //   variable = { productId: req.body.productId };
   // } else {
-    variable = { commentId: req.body.commentId };
+    variable = {
+     userId: req.body.userId,
+    productId: req.body.productId,
+
+    commentId: req.body.commentId,
+ 
+    };
   // }
 
   Dislike.find(variable).exec((err, dislikes) => {
@@ -42,11 +54,12 @@ router.post("/upLike", isAuthenticatedUser,async(req, res) => {
   // if (req.body.productId) {
   //   variable = { productId: req.body.productId, userId: req.body.userId };
   // } else {
-    variable = {
-      commentId: req.body.commentId,
-      productId: req.body.productId,
-      userId: req.body.userId,
-    };
+  variable = {
+    userId: req.body.userId,
+    productId: req.body.productId,
+
+    commentId: req.body.commentId,
+  };
   // }
 
   const like = new Like(variable);
@@ -77,9 +90,11 @@ router.post("/unLike", isAuthenticatedUser,async(req, res) => {
   //   variable = { productId: req.body.productId, userId: req.body.userId };
   // } else {
     variable = {
-      commentId: req.body.commentId,
-      productId: req.body.productId,
       userId: req.body.userId,
+    productId: req.body.productId,
+
+    commentId: req.body.commentId,
+  
     };
   // }
   await NotificationModel.create({
@@ -99,9 +114,11 @@ router.post("/unDisLike", isAuthenticatedUser,async(req, res) => {
   //   variable = { productId: req.body.productId, userId: req.body.userId };
   // } else {
     variable = {
-      commentId: req.body.commentId,
-      productId: req.body.productId,
       userId: req.body.userId,
+    productId: req.body.productId,
+
+    commentId: req.body.commentId,
+  
     };
   //}
 await NotificationModel.create({
@@ -120,9 +137,11 @@ router.post("/upDisLike",isAuthenticatedUser,async (req, res) => {
   // if (req.body.productId) {
   //   variable = { productId: req.body.productId, userId: req.body.userId };
   // } else {
-    variable = { commentId: req.body.commentId,
-      productId: req.body.productId,
-      userId: req.body.userId, };
+    variable = { userId: req.body.userId,
+    productId: req.body.productId,
+
+    commentId: req.body.commentId,
+   };
   //}
 await NotificationModel.create({
   subject: `${req.user.name} Dislike on your Product`,

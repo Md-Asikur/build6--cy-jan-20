@@ -12,7 +12,7 @@ import {
 
 const initialState = {
   data: [],
-  total: 1,
+  total: 2,
   loadings:false,
 }
 
