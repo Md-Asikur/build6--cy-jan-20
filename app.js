@@ -38,7 +38,8 @@ const comment = require("./routes/comment");
 const commentRouter = require("./routes/commentRouter");
 const categoryRouter = require("./routes/categoryRouter");
 const notificationRouter = require("./routes/notificationRouter");
-
+const postReactRouter = require("./routes/React/reactPostRouter")
+const commentReactRouter = require("./routes/React/reactCmRouter");
 
 //errors
 
@@ -51,6 +52,9 @@ app.use("/api/v1", like);
 app.use("/api/v1", commentRouter);
 app.use("/api/v1", categoryRouter);
 app.use("/api/v1", notificationRouter);
+//React post/comment
+app.use("/api/v1", postReactRouter);
+app.use("/api/v1", commentReactRouter);
 // //hosting
  app.use(express.static(path.join(__dirname, "./frontend/build")));
 

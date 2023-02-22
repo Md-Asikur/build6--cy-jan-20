@@ -31,7 +31,13 @@ import { createComment, getComments } from "../../actions/commentAction";
 import Loading from "./editor/Loading";
 import Pagination from "./editor/Pagination.tsx";
 import ProductCard from "../Home/ProductCard";
+import { getPostReacts, getPostReactsUnauth, reactPost } from "../../actions/reactActions";
+import ReactsPopup from "./react/ReactPopups";
+import ThumbUpOffAltIcon from "@mui/icons-material/ThumbUpOffAlt";
 const ProductDetails = ({ match }) => {
+
+   
+
   const dispatch = useDispatch();
   const alert = useAlert();
   const comments = useSelector((state) => state.comments);
@@ -61,10 +67,64 @@ const ProductDetails = ({ match }) => {
   const [comment, setComment] = useState("");
   const [CommentLists, setCommentLists] = useState([]);
   //console.log("video is" , Video);
-  const productId = match.params.id;
-  const productVariable = {
-    productId: productId,
+ //react post
+    const [visible, setVisible] = useState(false);
+    const [showMenu, setShowMenu] = useState(false);
+    const [reacts, setReacts] = useState();
+    const [check, setCheck] = useState();
+    const [total, setTotal] = useState(0);
+   
+    const [checkSaved, setCheckSaved] = useState();
+   useEffect(() => {
+     if (user) {
+      getReactsPost();
+     } else {
+       getReactsPostUnauth()
+   }
+   }, [product,user]);
+  
+
+   const getReactsPost = async () => {
+     const res = await getPostReacts(product._id);
+     setReacts(res.reacts);
+     setCheck(res.check);
+     setTotal(res.total);
+     setCheckSaved(res.checkSaved);
+   };
+//un auth
+  const getReactsPostUnauth = async () => {
+    const res = await getPostReactsUnauth(product._id);
+    setReacts(res.reacts);
+   
+    setTotal(res.total);
+    
   };
+   const reactHandler = async (type) => {
+     reactPost(product._id, type);
+     if (check == type) {
+       setCheck();
+       let index = reacts?.findIndex((x) => x.react == check);
+       if (index !== -1) {
+         setReacts([...reacts, (reacts[index].count = --reacts[index].count)]);
+         setTotal((prev) => --prev);
+       }
+     } else {
+       setCheck(type);
+       let index = reacts?.findIndex((x) => x.react == type);
+       let index1 = reacts?.findIndex((x) => x.react == check);
+       if (index !== -1) {
+         setReacts([...reacts, (reacts[index].count = ++reacts[index].count)]);
+         setTotal((prev) => ++prev);
+         console.log("reacts",reacts);
+       }
+       if (index1 !== -1) {
+         setReacts([...reacts, (reacts[index1].count = --reacts[index1].count)]);
+         setTotal((prev) => --prev);
+         console.log(reacts);
+       }
+     }
+   };
+  //react part end
   const increaseQuantity = () => {
     if (product.Stock <= quantity) return;
 
@@ -272,6 +332,90 @@ const ProductDetails = ({ match }) => {
               </Button>
             </DialogActions>
           </Dialog>
+          <div
+            className="post_infos"
+            style={{ display: "flex", justifyContent: "center", alignItems: "center" }}
+          >
+            <div className="reacts_count">
+              <div className="reacts_count_imgs">
+                {reacts &&
+                  reacts
+                    .sort((a, b) => {
+                      return b.count - a.count;
+                    })
+                    .slice(0, 3)
+                    .map(
+                      (react, i) =>
+                        react.count > 0 && (
+                          <img
+                            src={`../../../reacts/${react.react}.svg`}
+                            alt=""
+                            key={i}
+                          />
+                        )
+                    )}
+              </div>
+              <div className="reacts_count_num">{total > 0 && total}</div>
+              <div className="post_actions">
+                <ReactsPopup
+                  visible={visible}
+                  setVisible={setVisible}
+                  reactHandler={reactHandler}
+                />
+
+                <div
+                  className="post_action hover1"
+                  onMouseOver={() => {
+                    setTimeout(() => {
+                      setVisible(true);
+                    }, 500);
+                  }}
+                  onMouseLeave={() => {
+                    setTimeout(() => {
+                      setVisible(false);
+                    }, 500);
+                  }}
+                  onClick={() => reactHandler(check ? check : "like")}
+                >
+                  {check ? (
+                    <img
+                      src={`../../../reacts/${check}.svg`}
+                      alt=""
+                      className="small_react"
+                      style={{ width: "18px" }}
+                    />
+                  ) : (
+                    user && <ThumbUpOffAltIcon style={{ display: "block" }} />
+                  )}
+                  <span
+                    style={{
+                      color: `
+          
+          ${
+            check === "like"
+              ? "#4267b2"
+              : check === "love"
+              ? "#f63459"
+              : check === "haha"
+              ? "#f7b125"
+              : check === "sad"
+              ? "#f7b125"
+              : check === "wow"
+              ? "#f7b125"
+              : check === "angry"
+              ? "#e4605a"
+              : ""
+          }
+          `,
+                    }}
+                  >
+                    {/* {check ? check : "Like"} */}
+                    {check ? check : ""}
+                  </span>
+                </div>
+              </div>
+            </div>
+          </div>
           {/*<List.Item
             actions={[<LikeDislikes product productId={productId} userId={user?._id} />]}
           ></List.Item>

@@ -41,6 +41,18 @@ const userSchema = new mongoose.Schema({
     type: Date,
     default: Date.now,
   },
+  savedPosts: [
+    {
+      post: {
+        type: mongoose.Schema.ObjectId,
+        ref: "Product",
+      },
+      savedAt: {
+        type: Date,
+        required: true,
+      },
+    },
+  ],
 
   resetPasswordToken: String,
   resetPasswordExpire: Date,
